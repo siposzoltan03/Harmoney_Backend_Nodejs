@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 // const customers = require('./routes/customers');
 // const movies = require('./routes/movies');
 // const rentals = require('./routes/rentals');
-const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
 const path = require('path');
@@ -14,7 +13,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const users = require('./routes/users');
 const transactions = require('./routes/transactions');
 
 const app = express();
@@ -30,14 +29,14 @@ mongoose.connect('mongodb://localhost/harmoney', { useNewUrlParser: true , useUn
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
-app.use('/transactions', transactions);
+app.use('/api/transactions', transactions);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

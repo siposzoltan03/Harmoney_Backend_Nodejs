@@ -1,11 +1,11 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {userSchema} = require('./user');
+const {User, userSchema} = require('./user');
 
 const Transaction = mongoose.model('Transaction', new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
         minlength: 5,
         maxlength: 255
@@ -18,11 +18,11 @@ const Transaction = mongoose.model('Transaction', new mongoose.Schema({
         type: Number,
         required: true,
         min: 2,
-        max: 20
+        max: 999999999
     },
     frequency: {
         type: String,
-        enum: ["Daily", "Weekly", "Monthly", "Yearly"],
+        enum: ["Single" ,"Daily", "Weekly", "Monthly", "Yearly"],
         required: true,
         default: "Monthly"
     },
@@ -55,10 +55,10 @@ const Transaction = mongoose.model('Transaction', new mongoose.Schema({
         required: true,
         default: "Household"
     },
-    genre: {
-        type: userSchema,
-        required: true
-    },
+    user: {
+        type: mongoose.Schema.Types.ObjectID,
+        ref: User,
+    }
 }));
 
 function validateTransaction(transaction) {
@@ -66,7 +66,7 @@ function validateTransaction(transaction) {
         userId: Joi.objectId().required(),
     };
 
-    return Joi.validate(transaction, schema);
+    return Joi.validate(transaction, schema, {allowUnknown: true});
 }
 
 exports.Transaction = Transaction;
