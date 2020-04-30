@@ -4,26 +4,30 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50
-    },
     email: {
         type: String,
-        required: true,
+        required: "Email is required",
         minlength: 5,
         maxlength: 255,
         unique: true
     },
     password: {
         type: String,
-        required: true,
+        required: "Password is required",
         minlength: 5,
         maxlength: 1024
     },
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    firstName: {
+        type: String,
+        minlength: 3,
+        maxlength: 30
+    },
+    lastName: {
+        type: String,
+        minlength: 3,
+        maxlength: 30
+    }
 });
 
 userSchema.methods.generateAuthToken = function() {
@@ -35,7 +39,8 @@ const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
     const schema = {
-        name: Joi.string().min(5).max(50).required(),
+        firstName: Joi.string().min(3).max(30).required(),
+        lastName: Joi.string().min(3).max(30).required(),
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(5).max(255).required()
     };

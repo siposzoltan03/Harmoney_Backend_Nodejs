@@ -1,4 +1,5 @@
 const config = require('config');
+const cors = require('cors');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
@@ -28,12 +29,26 @@ mongoose.connect('mongodb://localhost/harmoney', { useNewUrlParser: true , useUn
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
+// app.options('/api/auth', cors());
+app.use(cors());
 app.use(express.json());
+// app.use('*',function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:5001"); // update to match the domain you will make the request from
+//   res.header('Access-Control-Allow-Methods', '*');
+//   res.header("Access-Control-Allow-Headers", "*");
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+//   next();
+// });
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-
+// app.use(cors({credentials: true, origin: 'http://localhost:5001'}));
+// app.options('*', cors());
 app.use('/', indexRouter);
+// app.use('/api/users');
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/transactions', transactions);
