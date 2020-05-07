@@ -30,16 +30,17 @@ mongoose.connect('mongodb://localhost/harmoney', { useNewUrlParser: true , useUn
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
 // app.options('/api/auth', cors());
-app.use(cors());
+// app.use(cors({credentials: true}));
 app.use(express.json());
+app.use(cors({credentials: true, origin: true}));
 // app.use('*',function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:5001"); // update to match the domain you will make the request from
-//   res.header('Access-Control-Allow-Methods', '*');
+//   res.header('Access-Control-Allow-Methods', 'GET', 'POST', 'PUT', 'DELETE');
 //   res.header("Access-Control-Allow-Headers", "*");
 //   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 //   res.header('Access-Control-Allow-Headers', 'Content-Type');
 //   res.header("Access-Control-Allow-Credentials", true);
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+//   res.header("credentials", "true");
 //   next();
 // });
 // app.use(express.urlencoded({ extended: false }));

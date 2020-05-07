@@ -6,8 +6,10 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router(undefined);
 const cors = require('cors');
+const auth = require('../middleware/auth');
 
-router.post('/',cors(), async (req, res) => {
+// login
+router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -21,9 +23,20 @@ router.post('/',cors(), async (req, res) => {
     const result = {
         'user': user,
         'token': token
-    }
+    };
     res.send(result);
 });
+
+router.post('/logout', auth, async (req, res) =>{
+    // const {error} = validate(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
+
+    if (req.user._id !== req.body._id) {
+        return res.status(401).send('Authorization failed')
+    }
+    return res.status(204).send("Logged out!");
+
+})
 
 function validate(req) {
     const schema = {

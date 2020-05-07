@@ -17,7 +17,10 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     },
-    isAdmin: Boolean,
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
     firstName: {
         type: String,
         minlength: 3,
@@ -27,6 +30,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         minlength: 3,
         maxlength: 30
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
 });
 
