@@ -48,7 +48,7 @@ router.put('/:id',auth, async (req, res) => {
     if (!user) return res.status(400).send('Invalid user.');
 
     const newTransaction = new Transaction({
-        _id: req.params.id,
+        _id: req.body.id,
         title: req.body.title,
         user: {
             _id: user._id,
@@ -63,12 +63,13 @@ router.put('/:id',auth, async (req, res) => {
 
     if (!newTransaction) return res.status(404).send('The transaction with the given ID was not found.');
 
-    const transaction = await Transaction.findByIdAndUpdate(req.params.id, newTransaction);
+    const transaction = await Transaction.findByIdAndUpdate(newTransaction._id, newTransaction);
     res.send(transaction);
 });
 
 router.delete('/:id',auth, async (req, res) => {
-    const transaction = await Transaction.findByIdAndRemove(req.params.id);
+    // const oldData = await Transaction.findById(req.params.id.toString());
+    const transaction = await Transaction.findByIdAndRemove(req.params.id.toString());
 
     if (!transaction) return res.status(404).send('The transaction with the given ID was not found.');
 
