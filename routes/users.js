@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/me', auth, cors(), async (req, res) => {
   const user = await User.findById(req.user._id).select('-password');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5001');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
   res.send(user);
 
 

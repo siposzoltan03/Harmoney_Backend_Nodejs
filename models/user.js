@@ -2,6 +2,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const Token = require('../models/token');
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -34,12 +35,35 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    resetPasswordToken: {
+        type: String,
+        required: false
+    },
+
+    resetPasswordExpires: {
+        type: Date,
+        required: false
     }
-});
+}, {timestamps: true});
 
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, process.env.HARMONEY_SECRET_KEY);
     return token;
+};
+
+userSchema.methods.generatePasswordReset = function() {
+    this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
+};
+
+userSchema.methods.generateVerificationToken = function() {
+    let payload = {
+        userId: this._id,
+        token: crypto.randomBytes(20).toString('hex')
+    };
+
+    return new Token(payload);
 };
 
 const User = mongoose.model('User', userSchema);
