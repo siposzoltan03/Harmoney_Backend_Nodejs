@@ -29,6 +29,7 @@ router.post('/', async (req, res) => {
   user = new User(_.pick(req.body, ['name', 'email', 'password', 'firstName', 'lastName']));
   user.isAdmin = false;
   user.isVerified = false;
+  user.profileImage = "";
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
