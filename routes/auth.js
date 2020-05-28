@@ -36,7 +36,20 @@ router.post('/logout', auth, async (req, res) =>{
     }
     return res.status(204).send("Logged out!");
 
-})
+});
+
+router.put('/update/:id', auth, upload, async (req, res) => {
+    req.body.userId = req.user._id;
+    // const { error } = validate(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
+
+    const updatedUser = req.body.user;
+    updatedUser.profileImage = req.body.imageUrl;
+
+    const result = await User.findByIdAndUpdate(updatedUser._id, updatedUser);
+    res.status(200).send(result);
+
+});
 
 function validate(req) {
     const schema = {
