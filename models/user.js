@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema({
         required: false,
         max: 255
     },
+
+    friends: {
+        type: [mongoose.Schema.Types.ObjectID],
+        Ref: this,
+        default: []
+    }
 }, {timestamps: true});
 
 userSchema.methods.generateAuthToken = function() {
