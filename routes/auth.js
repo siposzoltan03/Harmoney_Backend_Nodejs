@@ -38,7 +38,7 @@ router.post('/logout', auth, async (req, res) =>{
 
 });
 
-router.put('/update/:id', auth, upload, async (req, res) => {
+router.put('/update/:id', auth, async (req, res) => {
     req.body.userId = req.user._id;
     // const { error } = validate(req.body);
     // if (error) return res.status(400).send(error.details[0].message);
@@ -50,6 +50,17 @@ router.put('/update/:id', auth, upload, async (req, res) => {
     res.status(200).send(result);
 
 });
+
+router.get('/all_user',auth, async (req, res) => {
+    const currentUser = await User.findById(req.user._id);
+    const result = await User.find();
+    const filtered_res = result.filter(user => !isIdsEquals(user._id, currentUser._id));
+    res.status(200).send(filtered_res);
+});
+
+function isIdsEquals(currentId, currentUserId ) {
+    return currentId.toString() === currentUserId.toString();
+}
 
 function validate(req) {
     const schema = {

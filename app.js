@@ -16,6 +16,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const users = require('./routes/users');
 const transactions = require('./routes/transactions');
+const friendRequests = require('./routes/friendRequests');
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/', indexRouter);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/transactions', transactions);
+app.use('/api/friendRequests', friendRequests);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
