@@ -53,9 +53,23 @@ router.put('/update/:id', auth, async (req, res) => {
 
 router.get('/all_user',auth, async (req, res) => {
     const currentUser = await User.findById(req.user._id);
+    console.log(currentUser.firstName);
+    const filteredResult = [];
     const result = await User.find();
-    const filtered_res = result.filter(user => !isIdsEquals(user._id, currentUser._id));
-    res.status(200).send(filtered_res);
+    for (const user of result) {
+        console.log(user.firstName);
+        if (!isIdsEquals(user._id, currentUser._id)) {
+            if (user.friends.length === 0) filteredResult.push(user);
+            for (const friend of user.friends) {
+                console.log(friend[0].friend.id.firstName);
+                if (!isIdsEquals(friend[0].friend.id._id, currentUser._id)) {
+                    filteredResult.push(user);
+                }
+            }
+        }
+    }
+    // const filtered_res = result.filter((user, index) => !isIdsEquals(user._id, currentUser._id) && !currentUser.friends[index].ids === user._id);
+    res.status(200).send(filteredResult);
 });
 
 function isIdsEquals(currentId, currentUserId ) {
