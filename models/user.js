@@ -68,17 +68,17 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, process.env.HARMONEY_SECRET_KEY);
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({_id: this._id, isAdmin: this.isAdmin}, process.env.HARMONEY_SECRET_KEY);
     return token;
 };
 
-userSchema.methods.generatePasswordReset = function() {
+userSchema.methods.generatePasswordReset = function () {
     this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
     this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
 };
 
-userSchema.methods.generateVerificationToken = function() {
+userSchema.methods.generateVerificationToken = function () {
     let payload = {
         userId: this._id,
         token: crypto.randomBytes(20).toString('hex')
