@@ -10,10 +10,10 @@ const auth = require('../middleware/auth');
 
 // login
 router.post('/', async (req, res) => {
-    const { error } = validate(req.body);
+    const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({email: req.body.email});
     if (!user) return res.status(400).send('Invalid email or password.');
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     res.send(result);
 });
 
-router.post('/logout', auth, async (req, res) =>{
+router.post('/logout', auth, async (req, res) => {
     // const {error} = validate(req.body);
     // if (error) return res.status(400).send(error.details[0].message);
 
@@ -51,7 +51,7 @@ router.put('/update/:id', auth, async (req, res) => {
 
 });
 
-router.get('/all_user',auth, async (req, res) => {
+router.get('/all_user', auth, async (req, res) => {
     const currentUser = await User.findById(req.user._id);
     console.log(currentUser.firstName);
     const filteredResult = [];
@@ -72,7 +72,7 @@ router.get('/all_user',auth, async (req, res) => {
     res.status(200).send(filteredResult);
 });
 
-function isIdsEquals(currentId, currentUserId ) {
+function isIdsEquals(currentId, currentUserId) {
     return currentId.toString() === currentUserId.toString();
 }
 
