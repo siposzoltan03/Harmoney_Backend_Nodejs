@@ -53,17 +53,14 @@ const userSchema = new mongoose.Schema({
     },
 
     friends: {
-        type: mongoose.Schema.Types.Array,
-        friend: {
-            type: mongoose.Schema.Types.Object,
-            id: {
-                type: mongoose.Schema.Types.ObjectID,
-                Ref: this,
-            },
-            confirmed: {
-                type: Boolean,
-                default: false
-            }
+        type: Array,
+        id: {
+            type: mongoose.Schema.Types.ObjectID,
+            Ref: this,
+        },
+        confirmed: {
+            type: Boolean,
+            default: false
         }
     }
 }, {timestamps: true});
