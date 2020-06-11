@@ -61,8 +61,8 @@ router.get('/all_user', auth, async (req, res) => {
         if (!isIdsEquals(user._id, currentUser._id)) {
             if (user.friends.length === 0) filteredResult.push(user);
             for (const friend of user.friends) {
-                console.log(friend[0].friend.id.firstName);
-                if (!isIdsEquals(friend[0].friend.id._id, currentUser._id)) {
+                console.log(friend.id.firstName);
+                if (!isIdsEquals(friend.id._id, currentUser._id)) {
                     filteredResult.push(user);
                 }
             }
