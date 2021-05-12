@@ -16,7 +16,7 @@
     "lodash": "latest",
     "mongoose": "^5.9.10",
     "morgan": "~1.9.1",
-    "nodemailer": "^6.4.6",
+    "nodemailer": "^6.4.16",
     "nodemon": "^2.0.3",
     "pug": "2.0.0-beta11"
   },
